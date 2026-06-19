@@ -2,5 +2,6 @@ version: pipelines/v0.1
 label: MySQL to /dev/null
 timeout: 0
 max_retries: 0
+script: meltano invoke tap-mysql
 data_components:
 - tap-mysql
