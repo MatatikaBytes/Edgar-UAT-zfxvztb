@@ -2,7 +2,7 @@ version: pipelines/v0.1
 label: Weekly road fuel prices
 timeout: 0
 max_retries: 0
+script: meltano run --full-refresh --force --state-id-suffix "$PIPELINE_ID" tap-govuk-weekly-road-fuel-prices target-postgres
 data_components:
 - tap-govuk-weekly-road-fuel-prices
 - Warehouse
-- dbt

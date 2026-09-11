@@ -1,8 +1,7 @@
 version: pipelines/v0.1
-label: Spreadsheets Anywhere
+label: Large CSV
 timeout: 0
 max_retries: 0
 data_components:
 - tap-spreadsheets-anywhere
 - Warehouse
-- dbt
