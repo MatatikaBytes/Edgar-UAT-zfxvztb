@@ -28,6 +28,9 @@ plugins:
     variant: matatika
     pip_url: git+https://github.com/Matatika/files-dbt@v1.3
     lock: true
+  - name: files-melty-ai
+    variant: matatika
+    pip_url: git+https://github.com/meltano/files-melty-ai.git@v0.1.0
   utilities:
   - name: matatika
     variant: matatika
