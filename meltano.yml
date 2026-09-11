@@ -22,6 +22,9 @@ plugins:
   - name: target-jsonl
     variant: andyh1203
     pip_url: target-jsonl
+  - name: target-motherduck
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/target-duckdb.git@v0.11.1 duckdb==1.5.5
   transformers:
   - name: dbt
     variant: dbt-labs
