@@ -12,6 +12,9 @@ plugins:
   - name: tap-mysql
     variant: matatika
     pip_url: git+https://github.com/Matatika/pipelinewise-tap-mysql.git@v1.1.0
+  - name: tap-govuk-weekly-road-fuel-prices
+    variant: matatika
+    pip_url: git+https://github.com/Matatika/tap-spreadsheets-anywhere.git@v0.7.0
   loaders:
   - name: target-postgres
     variant: matatika
