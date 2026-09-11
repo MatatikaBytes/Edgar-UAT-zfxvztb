@@ -1,0 +1,67 @@
+{
+  "plugin_type": "extractors",
+  "name": "tap-spreadsheets-anywhere",
+  "namespace": "tap_spreadsheets_anywhere",
+  "variant": "matatika",
+  "label": "Spreadsheets Anywhere",
+  "docs": "https://www.matatika.com/data-details/tap-spreadsheets-anywhere/",
+  "repo": "https://github.com/Matatika/tap-spreadsheets-anywhere",
+  "pip_url": "git+https://github.com/Matatika/tap-spreadsheets-anywhere.git@v0.7.0",
+  "description": "Spreadsheets Anywhere is a software tool that allows users to create and edit spreadsheets on any device with internet access.\n\nSpreadsheets Anywhere is a cloud-based software tool that enables users to create and edit spreadsheets on any device with internet access, including desktop computers, laptops, tablets, and smartphones. The tool offers a range of features, including the ability to import and export data, create charts and graphs, and collaborate with others in real-time. Users can also customize their spreadsheets with a variety of formatting options and formulas, and can access their files from anywhere with an internet connection. With Spreadsheets Anywhere, users can streamline their workflow and increase productivity by eliminating the need for multiple software programs or devices.\n### Prerequisites\nTo obtain the Tables required setting for connecting to Spreadsheets Anywhere, you need to have access to the spreadsheet that you want to connect to. Once you have access, you can identify the name of the table or tables that you want to connect to. The table name should be entered in the appropriate field when setting up the connection to Spreadsheets Anywhere.\n### Enable BATCH mode for large syncs (optional)\nInstead of one record message per row, the tap can buffer rows and write them to Arrow IPC files, then emit batch messages that reference them - a compatible target loads these files directly instead of processing records one at a time. Set Batch Format, Batch Root Directory and Batch Size to enable it.\nCaveats: `arrow` is the only batch encoding this tap supports; only a target that advertises the `batch` capability processes batch messages, so leave these settings unset for any other target. Enabling BATCH mode does not otherwise change the schema seen downstream - add `\"arrow_native_timestamps\": false` to a table entry in Tables to keep its `date-time` columns as strings instead of native Arrow timestamps (the default), for a table with non-ISO-8601 date formatting.",
+  "logo_url": "/assets/images/datasource/tap-spreadsheets-anywhere.png",
+  "capabilities": [
+    "discover",
+    "state",
+    "catalog",
+    "batch"
+  ],
+  "settings": [
+    {
+      "name": "tables",
+      "kind": "array",
+      "label": "Tables",
+      "description": "A setting in Spreadsheets Anywhere that allows users to select which tables they want to connect to and use in their application.",
+      "hidden": false,
+      "sensitive": false,
+      "required": "true",
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "batch_config.encoding.format",
+      "kind": "options",
+      "label": "Batch Format",
+      "description": "Format of the batch files. This tap only supports Arrow.",
+      "options": [
+        {
+          "label": "Arrow",
+          "value": "arrow"
+        }
+      ],
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "batch_config.storage.root",
+      "kind": "string",
+      "label": "Batch Root Directory",
+      "description": "The root directory where the batch files will be stored. Defaults to the system's temporary directory if not specified.",
+      "hidden": true,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "batch_config.batch_size",
+      "kind": "integer",
+      "label": "Batch Size",
+      "description": "Number of rows per BATCH message file. Defaults to 100,000 if not specified.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    }
+  ]
+}
