@@ -1,6 +1,6 @@
 {
   "plugin_type": "loaders",
-  "name": "target-motherduck",
+  "name": "target-motherduck-new",
   "namespace": "motherduck",
   "variant": "meltanolabs",
   "label": "MotherDuck",
