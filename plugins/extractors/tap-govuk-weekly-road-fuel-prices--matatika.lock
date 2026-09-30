@@ -11,10 +11,10 @@
   "description": "Road fuel price statistics providing average UK retail 'pump' prices on a weekly basis.\n\n## Learn more\n\n[Weekly road fuel prices](https://www.gov.uk/government/statistics/weekly-road-fuel-prices)\n### Enable BATCH mode for large syncs (optional)\nInstead of one record message per row, the tap can buffer rows and write them to Arrow IPC files, then emit batch messages that reference them - a compatible target loads these files directly instead of processing records one at a time. Set Batch Format, Batch Root Directory and Batch Size to enable it.\nCaveats: `arrow` is the only batch encoding this tap supports; only a target that advertises the `batch` capability processes batch messages, so leave these settings unset for any other target. Enabling BATCH mode does not otherwise change the schema seen downstream - add `\"arrow_native_timestamps\": false` to a table entry in Tables to keep its `date-time` columns as strings instead of native Arrow timestamps (the default), for a table with non-ISO-8601 date formatting.",
   "logo_url": "https://www.gov.uk/assets/government-frontend/national-statistics-21661e9982d6f605259af3673ea887a18ecd817763b1a62b154d3551a1f1d1b2.png",
   "capabilities": [
-    "state",
     "catalog",
     "discover",
-    "batch"
+    "batch",
+    "state"
   ],
   "settings": [
     {
