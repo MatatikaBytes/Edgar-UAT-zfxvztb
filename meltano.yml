@@ -28,6 +28,9 @@ plugins:
   - name: target-motherduck
     variant: meltanolabs
     pip_url: git+https://github.com/MeltanoLabs/target-duckdb.git@v0.11.1 duckdb==1.5.5
+  - name: target-motherduck-new
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/target-duckdb.git@v0.11.1 duckdb==1.5.5
   transformers:
   - name: dbt
     variant: dbt-labs
