@@ -1,5 +1,5 @@
 version: pipelines/v0.1
-label: Meltano Cloud
+label: 01. Meltano Cloud
 timeout: 0
 max_retries: 0
 data_components:
