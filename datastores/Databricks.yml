@@ -1,0 +1,3 @@
+version: datastores/v0.1
+name: Databricks
+data_plugin: loaders/target-databricks--meltanolabs
