@@ -1,5 +1,4 @@
 version: workspaces/v0.2
-name: Edgar UAT
 meltano_version: V4_2
 app_properties:
   WELCOME_DATASET_ALIAS: welcome

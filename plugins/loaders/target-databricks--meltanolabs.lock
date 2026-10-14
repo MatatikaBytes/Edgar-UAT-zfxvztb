@@ -1,0 +1,248 @@
+{
+  "plugin_type": "loaders",
+  "name": "target-databricks",
+  "namespace": "databricks",
+  "variant": "meltanolabs",
+  "label": "Databricks",
+  "repo": "https://github.com/MeltanoLabs/target-databricks",
+  "pip_url": "git+https://github.com/MeltanoLabs/target-databricks.git@v0.1.2",
+  "python": "python3.13",
+  "executable": "target-databricks",
+  "description": "Databricks is a unified data and AI platform built on a lakehouse architecture. This loader\nwrites records into Delta tables in Unity Catalog through a Databricks SQL warehouse, using\n`INSERT` or `MERGE` statements depending on the load method.\n\n### Prerequisites\n\n1. **Server Hostname** and **HTTP Path**: open your SQL warehouse in the Databricks workspace\nand copy both values from the **Connection details** tab.\n\n2. **Credentials**: authenticate with one of the following.\n\n- **Personal access token** (`auth_type: pat`, the default) \u2014 generate a token under\n  **Settings > Developer > Access tokens** and set it as `access_token`.\n- **Service principal** (`auth_type: oauth_m2m`) \u2014 create an OAuth secret for a service\n  principal and set `client_id` and `client_secret`. Recommended for unattended use.\n\n3. **Permissions**: the user or service principal needs `CAN USE` on the SQL warehouse,\n`USE CATALOG` on the catalog, and `USE SCHEMA`, `CREATE SCHEMA` and `CREATE TABLE` (or\nequivalent ownership) on the target schema. Large batches are staged as Parquet in a Unity\nCatalog volume named `meltano_staging`, created in the target schema if missing, so the\nprincipal also needs `CREATE VOLUME` and `WRITE VOLUME`. Without them the loader logs a\nwarning once and falls back to slower inline inserts.\n\n### Target schema\n\nSet `default_target_schema` to load every stream into one schema. If it is unset, the schema\nis taken from `<schema>-<table>` stream names. The schema is created if it does not exist;\nuse `schema_creation_parameters.retention_days` to configure how long dropped tables remain\nrecoverable with `UNDROP TABLE` in schemas created this way.\n",
+  "logo_url": "/assets/logos/loaders/databricks.png",
+  "capabilities": [
+    "about",
+    "batch",
+    "schema-flattening",
+    "stream-maps",
+    "structured-logging",
+    "validate-records"
+  ],
+  "settings": [
+    {
+      "name": "server_hostname",
+      "kind": "string",
+      "label": "Server Hostname",
+      "description": "Workspace hostname, e.g. `dbc-1234.cloud.databricks.com`.",
+      "hidden": false,
+      "sensitive": false,
+      "required": "true",
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "http_path",
+      "kind": "string",
+      "label": "HTTP Path",
+      "description": "SQL warehouse HTTP path, e.g. `/sql/1.0/warehouses/abc`.",
+      "hidden": false,
+      "sensitive": false,
+      "required": "true",
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "auth_type",
+      "kind": "options",
+      "value": "pat",
+      "label": "Authentication Type",
+      "description": "`pat` for a personal access token, `oauth_m2m` for a service principal (client ID and secret).",
+      "options": [
+        {
+          "label": "Personal Access Token",
+          "value": "pat"
+        },
+        {
+          "label": "Service Principal (OAuth M2M)",
+          "value": "oauth_m2m"
+        }
+      ],
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "access_token",
+      "kind": "string",
+      "label": "Access Token",
+      "description": "Personal access token. Required when `auth_type` is `pat`.",
+      "hidden": false,
+      "sensitive": true,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "client_id",
+      "kind": "string",
+      "label": "Client ID",
+      "description": "Service principal client ID. Required for `oauth_m2m`.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "client_secret",
+      "kind": "string",
+      "label": "Client Secret",
+      "description": "Service principal OAuth secret. Required for `oauth_m2m`.",
+      "hidden": false,
+      "sensitive": true,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "catalog",
+      "kind": "string",
+      "label": "Catalog",
+      "description": "Unity Catalog name. Defaults to the warehouse default.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "default_target_schema",
+      "kind": "string",
+      "label": "Default Target Schema",
+      "description": "Schema to load into. If unset, it is taken from `<schema>-<table>` stream names.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "load_method",
+      "kind": "options",
+      "value": "upsert",
+      "label": "Load Method",
+      "description": "`upsert` merges on the stream key properties, `append-only` always inserts, `overwrite` truncates each table once per run then loads.",
+      "options": [
+        {
+          "label": "Upsert",
+          "value": "upsert"
+        },
+        {
+          "label": "Append Only",
+          "value": "append-only"
+        },
+        {
+          "label": "Overwrite",
+          "value": "overwrite"
+        }
+      ],
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "hard_delete",
+      "kind": "boolean",
+      "value": false,
+      "label": "Hard Delete",
+      "description": "On `ACTIVATE_VERSION`, delete stale rows instead of marking them with `_sdc_deleted_at`.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "schema_creation_parameters.retention_days",
+      "kind": "integer",
+      "label": "Schema Retention Days",
+      "description": "Optionally sets the recovery period for dropped managed tables in the schema, the period during which dropped tables can be recovered using the UNDROP TABLE command. If not specified, the schema inherits the recovery period from its parent catalog (default 7 days). Set the value to 0 to disable recovery, or between 7-30 days, inclusive.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "add_record_metadata",
+      "kind": "boolean",
+      "value": true,
+      "label": "Add Record Metadata",
+      "description": "Whether to add metadata columns.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "batch_size_rows",
+      "kind": "integer",
+      "value": 100000,
+      "label": "Batch Size Rows",
+      "description": "Maximum number of rows in each batch. Each batch is staged and loaded with a fixed cost of a few seconds, so larger batches load faster. Lower it if your records are very wide.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "clean_up_batch_files",
+      "kind": "boolean",
+      "value": true,
+      "label": "Clean Up Batch Files",
+      "description": "Delete Arrow `BATCH` files once they are loaded. These files are consume-once, so this is safe to leave enabled.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "validate_records",
+      "kind": "boolean",
+      "value": true,
+      "label": "Validate Records",
+      "description": "Whether to validate the schema of the incoming streams.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "flattening_enabled",
+      "kind": "boolean",
+      "value": false,
+      "label": "Flattening Enabled",
+      "description": "'True' to enable schema flattening and automatically expand nested properties.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "flattening_max_depth",
+      "kind": "integer",
+      "value": 10,
+      "label": "Flattening Max Depth",
+      "description": "The max depth to flatten schemas.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "stream_map_config",
+      "kind": "object",
+      "label": "Stream Map Config",
+      "description": "User-defined config values to be used within map expressions.",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    },
+    {
+      "name": "stream_maps",
+      "kind": "object",
+      "label": "Stream Maps",
+      "description": "Config object for stream maps capability. For more information check out [Stream Maps](https://sdk.meltano.com/en/latest/stream_maps.html).",
+      "hidden": false,
+      "sensitive": false,
+      "configured": false,
+      "protected": false
+    }
+  ]
+}

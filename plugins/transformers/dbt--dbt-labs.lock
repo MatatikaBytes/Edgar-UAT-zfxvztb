@@ -87,10 +87,6 @@
     }
   ],
   "commands": {
-    "compile": {
-      "args": "compile",
-      "description": "Generates executable SQL from source model, test, and analysis files. Compiled SQL files are written to the target/ directory."
-    },
     "test": {
       "args": "test",
       "description": "Runs tests on data in deployed models."
@@ -102,6 +98,10 @@
     "docs-generate": {
       "args": "docs generate",
       "description": "Generate documentation artifacts for your project."
+    },
+    "compile": {
+      "args": "compile",
+      "description": "Generates executable SQL from source model, test, and analysis files. Compiled SQL files are written to the target/ directory."
     },
     "run": {
       "args": "run",
